@@ -17,7 +17,6 @@ const postSlice = createSlice({
     storePosts(state, action: PayloadAction<Post[]>) {
       let details: Post[] = action.payload;
       state.bodyies.push(...details);
-      console.log(details);
     },
   },
 });
