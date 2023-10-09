@@ -1,0 +1,43 @@
+#event-form {
+  color: #3c4249;
+  width: 70%;
+  background-color: whitesmoke;
+  margin: 1rem auto;
+  text-align: center;
+  height: 35vh;
+  padding: 0.35rem 1rem;
+}
+
+#event-form label {
+  display: block;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  color: #3c4249;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+#event-form input,
+#event-form textarea {
+  font: inherit;
+  font-size: 1.1rem;
+  padding: 0.25rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin: auto;
+  width: 100%;
+}
+
+.controls-row {
+  display: flex;
+  gap: 4rem;
+  justify-content: center;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
+}

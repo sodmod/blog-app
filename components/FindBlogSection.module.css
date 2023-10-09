@@ -1,0 +1,37 @@
+.content-section {
+  margin: 3rem 0 6rem 0;
+  padding: 0 15%;
+}
+
+.content-section h2 {
+  font-size: 2rem;
+  font-family: "Quicksand", sans-serif;
+  margin: 2rem auto;
+  color: #b6cad5;
+}
+
+#search-form input {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: 4px 0 0 4px;
+  border: none;
+  background: #fff;
+}
+
+#search-form button {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: 0 4px 4px 0;
+  border: none;
+  background: #b6cad5;
+  color: #1d161a;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.events-list {
+  max-width: 60rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 3rem;
+}

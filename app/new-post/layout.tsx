@@ -1,8 +1,4 @@
-// import TanstackProvider from "@/provider/TanstackProvider";
-
-import { ReduxProvider } from "@/provider/ReduxProvider";
-import TanstackProvider from "../provider/TanstackProvider";
-import "./globals.css";
+import "./global.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -20,11 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <TanstackProvider>
-        <body className={inter.className}>
-          <ReduxProvider>{children}</ReduxProvider>
-        </body>
-      </TanstackProvider>
+      <body>{children}</body>
     </html>
   );
 }
