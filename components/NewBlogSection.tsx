@@ -1,7 +1,7 @@
 "use client";
 import ErrorBlock from "../UI/ErrorBlock";
 import LoadingIndicator from "../UI/LoadingIndicator";
-import { getBlog } from "../util/https";
+import { getBlog1 } from "../util/https";
 import styles from "./NewBlogSection.module.css";
 import PostItems from "./PostItems";
 import { useQuery } from "@tanstack/react-query";
@@ -15,8 +15,8 @@ type Post = {
 
 const NewBlogSection: React.FC = () => {
   const { data, error, isError, isLoading } = useQuery<Post[]>({
-    queryKey: ["blogs"],
-    queryFn: () => getBlog(),
+    queryKey: ["blooo"],
+    queryFn: getBlog1,
   });
 
   let content;

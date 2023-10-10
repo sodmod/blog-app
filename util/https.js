@@ -12,6 +12,32 @@ export async function postblog(formData) {
   }
 }
 
+export const getBlog1 = async () => {
+  let url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
+
+  const response = await fetch(url, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    console.log("There is Error");
+  }
+  let responseData = await response.json();
+
+  const postsArray = [];
+  let post;
+  for (const key in responseData) {
+    let post = {
+      id: key,
+      title: responseData[key].title,
+      description: responseData[key].description,
+    };
+    postsArray.push(post);
+  }
+
+  return postsArray;
+};
+
 export const getBlog = async ({ signal, searchTerm }) => {
   let url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
 
