@@ -9,13 +9,19 @@ type Post = {
   title: string;
   description: string;
 };
+type Post1 = {
+  title: string;
+  description: string;
+};
 type RootState = {
   post: Post;
 };
 const Form: React.FC<{
   children: React.ReactNode;
   onSubmit: (data: Record<string, any>) => void;
+  inputData: any;
 }> = (props) => {
+  const { title, description } = props.inputData || {};
   const router = useRouter();
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,18 +31,11 @@ const Form: React.FC<{
     router.push("/");
   }
 
-  const sele = useSelector((state: RootState) => state.post);
-  console.log(sele);
   return (
     <form id={styles["event-form"]} onSubmit={handleSubmit}>
       <div className={styles["control"]}>
         <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          defaultValue={sele?.title ?? ""}
-        />
+        <input type="text" id="title" name="title" defaultValue={title ?? ""} />
       </div>
 
       <p className={styles["control"]}>
@@ -44,7 +43,7 @@ const Form: React.FC<{
         <textarea
           id="description"
           name="description"
-          defaultValue={sele?.description ?? ""}
+          defaultValue={description ?? ""}
         />
       </p>
       <div className={styles["form-actions"]}>{props.children}</div>

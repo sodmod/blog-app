@@ -15,31 +15,23 @@ export async function postblog(formData: any) {
   }
 }
 
-// export const getBlog1 = async () => {
-//   let url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
+export async function patchBlog({
+  id,
+  formData,
+}: {
+  id: string;
+  formData: any;
+}) {
+  const url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
 
-//   const response = await fetch(url, {
-//     method: "GET",
-//   });
-
-//   if (!response.ok) {
-//     console.log("There is Error");
-//   }
-//   let responseData = await response.json();
-
-//   const postsArray = [];
-//   let post;
-//   for (const key in responseData) {
-//     let post = {
-//       id: key,
-//       title: responseData[key].title,
-//       description: responseData[key].description,
-//     };
-//     postsArray.push(post);
-//   }
-
-//   return postsArray;
-// };
+  const response = await fetch(url, {
+    method: "PATCH",
+    body: JSON.stringify(formData),
+    headers: {
+      "Content-Type": "application.json",
+    },
+  });
+}
 
 export const getBlog1 = async () => {
   let url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
@@ -88,9 +80,9 @@ export const getBlog = async ({
       title: await response.json(),
       withDarkMode: true,
     });
-    console.log("There is Error");
   }
-  let responseData = await response.json();
+  const responseData = await response.json();
+  console.log("Hmmm this is the real response data", responseData);
 
   const postsArray = [];
   let post;
@@ -129,3 +121,30 @@ export const getBlog = async ({
     return postsArray;
   }
 };
+
+export async function fetchBlog({ id, signal }: { id: string; signal: any }) {
+  let url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
+
+  const response = await fetch(url, {
+    method: "GET",
+    signal: signal,
+  });
+
+  if (!response.ok) {
+    throw new Error({ statusCode: 400, title: await response.json() });
+  }
+
+  let responseData = await response.json();
+  const postsArray = [];
+
+  for (const key in responseData) {
+    if (id === key) {
+      let post = {
+        id: key,
+        title: responseData[key].title,
+        description: responseData[key].description,
+      };
+      return post;
+    }
+  }
+}

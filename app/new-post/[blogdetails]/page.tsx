@@ -21,9 +21,10 @@ interface MyError {
   title?: string;
   withDarkMode: boolean;
 }
-const PostDetails = () => {
+const PostDetails: React.FC = () => {
   const param = useParams();
   const id = param.blogdetails.toString();
+
   const retry = useQueryClient();
   const dispatch = useDispatch();
 
@@ -37,7 +38,7 @@ const PostDetails = () => {
   console.log(result);
 
   function retryHandler() {
-    retry.refetchQueries(["bloo"]);
+    retry.refetchQueries(["blo"]);
   }
 
   if (result) {
@@ -122,7 +123,9 @@ const PostDetails = () => {
               <h1 className="w-1/2">Title</h1>
               <nav className="flex gap-5 justify-end w-1/2">
                 <button>Delete</button>
-                <Link href="/new-post">Edit</Link>
+                <Link href={`/new-post/${param.blogdetails}/edit-post`}>
+                  Edit
+                </Link>
               </nav>
             </div>
             {/* <div id={styles["event-details-content"]}> */}

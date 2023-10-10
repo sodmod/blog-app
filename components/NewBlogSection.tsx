@@ -1,7 +1,7 @@
 "use client";
 import ErrorBlock from "../UI/ErrorBlock";
 import LoadingIndicator from "../UI/LoadingIndicator";
-import { getBlog } from "../util/https";
+import { getBlog, getBlog1 } from "../util/https";
 import styles from "./NewBlogSection.module.css";
 import PostItems from "./PostItems";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,7 +17,7 @@ const NewBlogSection: React.FC = () => {
   const retry = useQueryClient();
   const { data, error, isError, isLoading } = useQuery<Post[]>({
     queryKey: ["blooog"],
-    queryFn: ({ signal }) => getBlog({ signal, searchTerm: "", id: "" }),
+    queryFn: getBlog1,
   });
 
   function retryHandler() {

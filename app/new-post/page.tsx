@@ -22,7 +22,7 @@ const NewPost: React.FC = () => {
   }
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form inputData={null} onSubmit={handleSubmit}>
         <div className={styles["form-actions"]}>
           <Link
             href=""
