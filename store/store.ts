@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import postSlice from "@/slices/useSlice";
+import { postReducer, singlePostReducer } from "@/slices/useSlice";
 
 function makeStore() {
   return configureStore({
-    reducer: { postSlice },
+    reducer: { posts: postReducer, post: singlePostReducer },
   });
 }
 

@@ -20,11 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <TanstackProvider>
-        <body className={inter.className}>
-          <ReduxProvider>{children}</ReduxProvider>
-        </body>
-      </TanstackProvider>
+      <body className={inter.className}>
+        <ReduxProvider>
+          <TanstackProvider>{children}</TanstackProvider>
+        </ReduxProvider>
+      </body>
     </html>
   );
 }

@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import styles from "../../components/Form.module.css";
+import styles from "../../../components/Form.module.css";
 import Form from "@/components/Form";
 import { postblog } from "@/util/https";
 import { useMutation } from "@tanstack/react-query";
@@ -24,7 +24,13 @@ const NewPost: React.FC = () => {
     <>
       <Form onSubmit={handleSubmit}>
         <div className={styles["form-actions"]}>
-          <Link href="" className="button-text">
+          <Link
+            href=""
+            className="button-text"
+            onClick={() => {
+              router.back();
+            }}
+          >
             Cancel
           </Link>
           <button type="submit" className="button">

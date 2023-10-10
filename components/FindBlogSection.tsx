@@ -10,15 +10,26 @@ import PostItems from "./PostItems";
 import styles from "./FindBlogSection.module.css";
 import { storePosts } from "../slices/useSlice";
 
+type Post = {
+  id: string;
+  title: string;
+  description: string;
+};
+
+interface MyError {
+  statusCode: number;
+  title?: string;
+  withDarkMode: boolean;
+}
 const FindBlogSection: React.FC = (props) => {
   const searchElement = useRef<HTMLInputElement | null>(null);
   const [searchTerm, setSetsearchTerm] = useState<string>("");
 
   const disptatch = useDispatch<AppDispatch>();
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<Post[], MyError>({
     queryKey: ["blogs", { search: searchTerm }],
-    queryFn: ({ signal }) => getBlog({ signal, searchTerm }),
+    queryFn: ({ signal }) => getBlog({ signal, searchTerm, id: "" }),
     enabled: searchTerm !== "",
   });
   if (data) {
@@ -36,12 +47,6 @@ const FindBlogSection: React.FC = (props) => {
   //   content = <LoadingIndicator />;
   // }
 
-  if (error) {
-    content = (
-      <ErrorBlock title="An error occured" message="Failed to fetch events." />
-    );
-  }
-
   if (data) {
     content = (
       <ul className={styles[".events-list"]}>
@@ -51,6 +56,10 @@ const FindBlogSection: React.FC = (props) => {
           </li>
         ))}
       </ul>
+    );
+  } else if (error) {
+    content = (
+      <ErrorBlock title={error?.title} message=" Failed to fetch events." />
     );
   }
 

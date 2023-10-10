@@ -1,10 +1,10 @@
 "use client";
 import ErrorBlock from "../UI/ErrorBlock";
 import LoadingIndicator from "../UI/LoadingIndicator";
-import { getBlog1 } from "../util/https";
+import { getBlog } from "../util/https";
 import styles from "./NewBlogSection.module.css";
 import PostItems from "./PostItems";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // import { useQuery } from "@tanstack/react-query";
 
 type Post = {
@@ -14,20 +14,20 @@ type Post = {
 };
 
 const NewBlogSection: React.FC = () => {
+  const retry = useQueryClient();
   const { data, error, isError, isLoading } = useQuery<Post[]>({
-    queryKey: ["blooo"],
-    queryFn: getBlog1,
+    queryKey: ["blooog"],
+    queryFn: ({ signal }) => getBlog({ signal, searchTerm: "", id: "" }),
   });
+
+  function retryHandler() {
+    retry.refetchQueries(["bloog"]);
+  }
 
   let content;
   if (isLoading) {
     content = <LoadingIndicator />;
-  } else if (error) {
-    content = (
-      <ErrorBlock title="An error occurred" message="Failed to fetch events." />
-    );
-  }
-  if (data) {
+  } else if (data) {
     content = (
       <ul className={styles["events-list"]}>
         {data.map((event) => (
@@ -36,6 +36,20 @@ const NewBlogSection: React.FC = () => {
           </li>
         ))}
       </ul>
+    );
+  } else {
+    content = (
+      <>
+        <ErrorBlock
+          title="An error occurred"
+          message="Failed to fetch events."
+        />
+        <p>
+          <button className={styles["button"]} onClick={retryHandler}>
+            View Details
+          </button>
+        </p>
+      </>
     );
   }
 

@@ -10,6 +10,12 @@ const initialState = {
   bodyies: [] as Post[],
 };
 
+const initialPost: Post = {
+  id: "",
+  title: "",
+  description: "",
+};
+
 const postSlice = createSlice({
   name: "posts",
   initialState,
@@ -21,5 +27,30 @@ const postSlice = createSlice({
   },
 });
 
+const singlePost = createSlice({
+  name: "post",
+  initialState: initialPost,
+  reducers: {
+    storePost(state, action: PayloadAction<Post>) {
+      let details = action.payload;
+      state.id = details.id;
+      state.title = details.title;
+      state.description = details.description;
+    },
+    removePost() {
+      return initialPost;
+    },
+  },
+});
+
+// export const { storePosts } = postSlice.actions;
+// export const postSlice = postSlice.reducer;
+
+// export const { storePost, removePost } = singlePost.actions;
+// export const singlePost = singlePost.reducer;
+
 export const { storePosts } = postSlice.actions;
-export default postSlice.reducer;
+export const { storePost, removePost } = singlePost.actions;
+
+export const postReducer = postSlice.reducer;
+export const singlePostReducer = singlePost.reducer;
