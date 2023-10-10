@@ -22,19 +22,29 @@ export async function patchBlog({
   id: string;
   formData: any;
 }) {
-  const url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
+  const url = "https://blog-c4e0e-default-rtdb.firebaseio.com/";
+  const updatedurl = `${url}/post/${id}.json`; // Corrected URL
 
-  const response = await fetch(url, {
-    method: "PATCH",
+  const response = await fetch(updatedurl, {
+    method: "PUT", // Use PATCH to update specific fields, or PUT to replace the entire object
     body: JSON.stringify(formData),
     headers: {
-      "Content-Type": "application.json",
+      "Content-Type": "application/json", // Corrected content type
     },
   });
+
+  if (!response.ok) {
+    throw new Error(
+      { statusCode: 400, title: await response.json() },
+      `Failed to update data: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return await response.json();
 }
 
 export const getBlog1 = async () => {
-  let url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
+  let url = `https://blog-c4e0e-default-rtdb.firebaseio.com/post.json`;
 
   const response = await fetch(url, {
     method: "GET",
