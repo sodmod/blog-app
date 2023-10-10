@@ -16,7 +16,7 @@ type Post = {
 const NewBlogSection: React.FC = () => {
   const { data, error, isError, isLoading } = useQuery<Post[]>({
     queryKey: ["blogs"],
-    queryFn: getBlog,
+    queryFn: () => getBlog(),
   });
 
   let content;
