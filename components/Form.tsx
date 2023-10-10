@@ -2,6 +2,7 @@
 
 import { useSelector } from "react-redux";
 import styles from "./Form.module.css";
+import { useRouter } from "next/navigation";
 
 type Post = {
   id: string;
@@ -15,11 +16,13 @@ const Form: React.FC<{
   children: React.ReactNode;
   onSubmit: (data: Record<string, any>) => void;
 }> = (props) => {
+  const router = useRouter();
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
     props.onSubmit(data);
+    router.push("/");
   }
 
   const sele = useSelector((state: RootState) => state.post);

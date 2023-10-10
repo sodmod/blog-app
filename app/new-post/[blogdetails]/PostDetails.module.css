@@ -14,20 +14,16 @@
 }
 
 #event-details-info {
-  padding: 0 3rem 3rem 3rem;
+  padding: 3rem;
+  width: 100%;
+  text-align: center;
 }
-
-/* #event-details-location {
-  font-size: 1.15rem;
-  color: #b6cad5;
-  font-weight: bold;
-  margin: 0;
-} */
 
 #event-details-description {
   font-size: 1.25rem;
   line-height: 2rem;
   color: #b6cad5;
+  padding: 2rem;
 }
 
 .nav-item {

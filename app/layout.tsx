@@ -1,6 +1,6 @@
 // import TanstackProvider from "@/provider/TanstackProvider";
 
-import { ReduxProvider } from "@/provider/ReduxProvider";
+import ReduxProvider from "@/provider/ReduxProvider";
 import TanstackProvider from "../provider/TanstackProvider";
 import "./globals.css";
 import type { Metadata } from "next";
@@ -21,9 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ReduxProvider>
-          <TanstackProvider>{children}</TanstackProvider>
-        </ReduxProvider>
+        <TanstackProvider>
+          <ReduxProvider>{children}</ReduxProvider>
+        </TanstackProvider>
       </body>
     </html>
   );

@@ -55,7 +55,7 @@ const PostDetails = () => {
     content = <LoadingIndicator />;
   }
   if (result) {
-    <>
+    <div>
       <div className="flex justify-evenly">
         <h1>title</h1>
         <nav className="flex gap-5">
@@ -71,7 +71,7 @@ const PostDetails = () => {
           <p id={styles["event-details-description"]}>{result.title}</p>
         </div>
       </div>
-    </>;
+    </div>;
   } else if (error) {
     content = (
       <>
@@ -96,7 +96,48 @@ const PostDetails = () => {
           View all Events
         </Link>
       </Header>
-      {content}
+      <div id={styles["event-details-content"]}>
+        {error && (
+          <>
+            <ErrorBlock
+              title={error.statusCode}
+              // message=""
+              message={error.title ? error.title : ""}
+            />
+            <p>
+              <button className={styles["button"]} onClick={retryHandler}>
+                View Details
+              </button>
+            </p>
+          </>
+        )}
+        {isLoading && (
+          <div className="flex m-auto justify-center">
+            <LoadingIndicator />
+          </div>
+        )}
+        {data && !isLoading && (
+          <div>
+            <div className="flex justify-evenly w-full text-3xl p-3">
+              <h1 className="w-1/2">Title</h1>
+              <nav className="flex gap-5 justify-end w-1/2">
+                <button>Delete</button>
+                <Link href="/new-post">Edit</Link>
+              </nav>
+            </div>
+            {/* <div id={styles["event-details-content"]}> */}
+            <div id={styles["event-details-info"]}>
+              <div>
+                <p>{result?.title}</p>
+              </div>
+              <p id={styles["event-details-description"]}>
+                {result?.description}
+              </p>
+            </div>
+            {/* </div> */}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import styles from "../../../components/Form.module.css";
+import styles from "../../components/Form.module.css";
 import Form from "@/components/Form";
 import { postblog } from "@/util/https";
 import { useMutation } from "@tanstack/react-query";

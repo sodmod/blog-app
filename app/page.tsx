@@ -1,5 +1,4 @@
-"use client";
-
+// "use client";
 import BlogEventsIntroSection from "@/components/BlogEventsIntroSection";
 import Header from "@/components/Header";
 import NewBlogSection from "@/components/NewBlogSection";
