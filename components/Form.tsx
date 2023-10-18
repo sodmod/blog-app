@@ -3,18 +3,6 @@
 import { useState } from "react";
 import styles from "./Form.module.css";
 
-type Post = {
-  id: string;
-  title: string;
-  description: string;
-};
-type Post1 = {
-  title: string;
-  description: string;
-};
-type RootState = {
-  post: Post;
-};
 const Form: React.FC<{
   children: React.ReactNode;
   onSubmit: (data: Record<string, any>) => void;
