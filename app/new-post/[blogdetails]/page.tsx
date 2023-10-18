@@ -8,25 +8,12 @@ import { deleteBlog, getBlogPost } from "@/util/https";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { storePost } from "@/slices/useSlice";
-
-type Post = {
-  unique: string;
-  title: string;
-  description: string;
-};
-
 interface Post1 {
   uniqueId: string;
   title: string;
   description: string;
   url: string;
   dateCreated: Date;
-}
-
-interface MyError {
-  statusCode: number;
-  title?: string;
-  withDarkMode: boolean;
 }
 const PostDetails: React.FC = () => {
   const param = useParams();
@@ -52,9 +39,9 @@ const PostDetails: React.FC = () => {
     );
   }
 
-  function retryHandler() {
-    retry.refetchQueries(["post1"]);
-  }
+  // function retryHandler() {
+  //   retry.refetchQueries(["post1"]);
+  // }
 
   return (
     <div className="m-auto">
