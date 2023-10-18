@@ -2,9 +2,9 @@
 import ErrorBlock from "../UI/ErrorBlock";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import { getBlog1 } from "../util/https";
-import styles from "./NewBlogSection.module.css";
 import PostItems from "./PostItems";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import styles from "./NewBlogSection.module.css";
 
 interface Post {
   uniqueId: string;

@@ -14,7 +14,6 @@ const EditPost: React.FC = () => {
   const router = useRouter();
 
   const data = useSelector((state: any) => state.post);
-  console.log("This is the uniqueId", data);
 
   const { mutate } = useMutation({
     mutationFn: patchBlog,

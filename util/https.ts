@@ -1,21 +1,26 @@
 import Error from "next/error";
 
+// let url = "https://spring-blog-app.onrender.com/api/";
+
 export async function postblog(formData: any) {
-  console.log(formData.get("url"));
-  const url = "http://localhost:9999/api/post/blog";
+  // const url = "http://localhost:9999/api/post/blog";
+  // url += "post/blog";
 
   const sss = {
     title: formData.get("title"),
     description: formData.get("description"),
     url: formData.get("url"),
   };
-  const response = await fetch(url, {
-    method: "POST",
-    body: JSON.stringify(sss),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    "https://spring-blog-app.onrender.com/api/post/blog",
+    {
+      method: "POST",
+      body: JSON.stringify(sss),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error({ statusCode: 400, title: "Message not sent" });
@@ -23,17 +28,20 @@ export async function postblog(formData: any) {
 }
 
 export async function patchBlog({ formData }: { formData: any }) {
-  const url = "http://localhost:9999/api/update/blog";
+  // url += "/update/blog";
 
   console.log("This is SSS", formData);
 
-  const response = await fetch(url, {
-    method: "PUT",
-    body: JSON.stringify(formData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    "https://spring-blog-app.onrender.com/api/update/blog",
+    {
+      method: "PUT",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error(
@@ -46,12 +54,17 @@ export async function patchBlog({ formData }: { formData: any }) {
 }
 
 export const getBlog1 = async () => {
-  const response = await fetch("http://localhost:9999/api/all-post/blog", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  // url += "all-post/blog";
+  // const url = "http://localhost:9999/api/all-post/blog"
+  const response = await fetch(
+    "https://spring-blog-app.onrender.com/api/all-post/blog",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   let responseData = await response.json();
 
@@ -81,12 +94,16 @@ export const getBlog = async ({
   searchTerm: string;
   id: string;
 }) => {
-  let url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
+  // let url = "http://localhost:9999/api/all-post/blog";
+  // url += "all-post/blog";
 
-  const response = await fetch(url, {
-    method: "GET",
-    signal: signal,
-  });
+  const response = await fetch(
+    "https://spring-blog-app.onrender.com/api/all-post/blog",
+    {
+      method: "GET",
+      signal: signal,
+    }
+  );
 
   if (!response.ok) {
     throw new Error({
@@ -106,7 +123,7 @@ export const getBlog = async ({
       const searchableText = post.title;
       if (searchableText.toLowerCase().includes(searchTerm.toLowerCase())) {
         postsArray.push({
-          uniqueId: key,
+          uniqueId: post.uniqueId,
           title: post.title,
           description: post.description,
           date: post.dateCreated,
@@ -141,20 +158,21 @@ export const getBlog = async ({
 };
 
 export async function fetchBlog({ id, signal }: { id: string; signal: any }) {
-  let url = "http://localhost:9999/api/all-post/blog";
+  // let url = "http://localhost:9999/api/all-post/blog";
+  // url += `/blog?post-id=${id}`;
 
-  const response = await fetch(url, {
-    method: "GET",
-
-    signal: signal,
-  });
-
-  const response1 = await fetch(
-    `http://localhost:9999/api/get-a-post/blog?post-id=${id}`,
+  const response = await fetch(
+    `https://spring-blog-app.onrender.com/api/all-post/blog`,
     {
       method: "GET",
+
+      signal: signal,
     }
   );
+
+  // const response1 = await fetch(url, {
+  //   method: "GET",
+  // });
 
   if (!response.ok) {
     throw new Error({ statusCode: 400, title: await response.json() });
@@ -166,8 +184,10 @@ export async function fetchBlog({ id, signal }: { id: string; signal: any }) {
 }
 
 export const getBlogPost = async ({ id }: { id: string }) => {
+  // url += `get-a-post/blog?post-id=${id}`;
+  // const url = `http://localhost:9999/api/get-a-post/blog?post-id=${id}`
   const response = await fetch(
-    `http://localhost:9999/api/get-a-post/blog?post-id=${id}`,
+    `https://spring-blog-app.onrender.com/api/get-a-post/blog?post-id=${id}`,
     {
       method: "GET",
     }
@@ -182,8 +202,10 @@ export const getBlogPost = async ({ id }: { id: string }) => {
 };
 
 export const deleteBlog = async ({ id }: { id: string }) => {
+  // url += `/delete/blog?post-id=${id}`;
+  // const url = `http://localhost:9999/api/delete/blog?post-id=${id}`
   const response = await fetch(
-    `http://localhost:9999/api/delete/blog?post-id=${id}`,
+    `https://spring-blog-app.onrender.com/api/delete/blog?post-id=${id}`,
     {
       method: "DELETE",
     }
