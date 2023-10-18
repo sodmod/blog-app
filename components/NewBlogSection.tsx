@@ -1,17 +1,18 @@
 "use client";
 import ErrorBlock from "../UI/ErrorBlock";
 import LoadingIndicator from "../UI/LoadingIndicator";
-import { getBlog, getBlog1 } from "../util/https";
+import { getBlog1 } from "../util/https";
 import styles from "./NewBlogSection.module.css";
 import PostItems from "./PostItems";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-// import { useQuery } from "@tanstack/react-query";
 
-type Post = {
-  id: string;
+interface Post {
+  uniqueId: string;
   title: string;
   description: string;
-};
+  date: Date;
+  url: string;
+}
 
 const NewBlogSection: React.FC = () => {
   const retry = useQueryClient();
@@ -31,7 +32,7 @@ const NewBlogSection: React.FC = () => {
     content = (
       <ul className={styles["events-list"]}>
         {data.map((event) => (
-          <li key={event.id}>
+          <li key={event.uniqueId}>
             <PostItems event={event} />
           </li>
         ))}

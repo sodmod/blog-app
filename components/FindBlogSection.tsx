@@ -4,17 +4,18 @@ import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { getBlog } from "@/util/https";
-import LoadingIndicator from "@/UI/LoadingIndicator";
 import ErrorBlock from "@/UI/ErrorBlock";
 import PostItems from "./PostItems";
 import styles from "./FindBlogSection.module.css";
 import { storePosts } from "../slices/useSlice";
 
-type Post = {
-  id: string;
+interface Post {
+  uniqueId: string;
   title: string;
   description: string;
-};
+  date: Date;
+  url: string;
+}
 
 interface MyError {
   statusCode: number;
@@ -51,7 +52,7 @@ const FindBlogSection: React.FC = (props) => {
     content = (
       <ul className={styles[".events-list"]}>
         {data.map((event) => (
-          <li key={event.id}>
+          <li key={event.uniqueId}>
             <PostItems event={event} />
           </li>
         ))}

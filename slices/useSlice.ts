@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type Post = {
-  id: string;
+  uniqueId: string;
   title: string;
   description: string;
+  url: string;
 };
 
 const initialState = {
@@ -11,9 +12,10 @@ const initialState = {
 };
 
 const initialPost: Post = {
-  id: "",
+  uniqueId: "",
   title: "",
   description: "",
+  url: "",
 };
 
 const postSlice = createSlice({
@@ -33,9 +35,10 @@ const singlePost = createSlice({
   reducers: {
     storePost(state, action: PayloadAction<Post>) {
       let details = action.payload;
-      state.id = details.id;
+      state.uniqueId = details.uniqueId;
       state.title = details.title;
       state.description = details.description;
+      state.url = details.url;
     },
     removePost() {
       return initialPost;

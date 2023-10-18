@@ -1,13 +1,20 @@
 import Error from "next/error";
-import { AbortSignal } from "abort-controller";
-
-type Post1 = {}[];
 
 export async function postblog(formData: any) {
-  const url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
+  console.log(formData.get("url"));
+  const url = "http://localhost:9999/api/post/blog";
+
+  const sss = {
+    title: formData.get("title"),
+    description: formData.get("description"),
+    url: formData.get("url"),
+  };
   const response = await fetch(url, {
     method: "POST",
-    body: JSON.stringify(formData),
+    body: JSON.stringify(sss),
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   if (!response.ok) {
@@ -15,21 +22,16 @@ export async function postblog(formData: any) {
   }
 }
 
-export async function patchBlog({
-  id,
-  formData,
-}: {
-  id: string;
-  formData: any;
-}) {
-  const url = "https://blog-c4e0e-default-rtdb.firebaseio.com/";
-  const updatedurl = `${url}/post/${id}.json`; // Corrected URL
+export async function patchBlog({ formData }: { formData: any }) {
+  const url = "http://localhost:9999/api/update/blog";
 
-  const response = await fetch(updatedurl, {
-    method: "PUT", // Use PATCH to update specific fields, or PUT to replace the entire object
+  console.log("This is SSS", formData);
+
+  const response = await fetch(url, {
+    method: "PUT",
     body: JSON.stringify(formData),
     headers: {
-      "Content-Type": "application/json", // Corrected content type
+      "Content-Type": "application/json",
     },
   });
 
@@ -44,24 +46,26 @@ export async function patchBlog({
 }
 
 export const getBlog1 = async () => {
-  let url = `https://blog-c4e0e-default-rtdb.firebaseio.com/post.json`;
-
-  const response = await fetch(url, {
+  const response = await fetch("http://localhost:9999/api/all-post/blog", {
     method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
+
+  let responseData = await response.json();
 
   if (!response.ok) {
     throw new Error({ statusCode: 400, title: await response.json() });
   }
-
-  let responseData = await response.json();
   const postsArray = [];
-
   for (const key in responseData) {
     let post = {
-      id: key,
+      uniqueId: responseData[key].uniqueId,
       title: responseData[key].title,
       description: responseData[key].description,
+      date: responseData[key].dateCreated,
+      url: responseData[key].url,
     };
     postsArray.push(post);
   }
@@ -102,9 +106,11 @@ export const getBlog = async ({
       const searchableText = post.title;
       if (searchableText.toLowerCase().includes(searchTerm.toLowerCase())) {
         postsArray.push({
-          id: key,
+          uniqueId: key,
           title: post.title,
           description: post.description,
+          date: post.dateCreated,
+          url: post.url,
         });
       }
     }
@@ -125,6 +131,8 @@ export const getBlog = async ({
         id: key,
         title: responseData[key].title,
         description: responseData[key].description,
+        date: responseData[key].dateCreated,
+        url: responseData[key].url,
       };
       postsArray.push(post);
     }
@@ -133,28 +141,55 @@ export const getBlog = async ({
 };
 
 export async function fetchBlog({ id, signal }: { id: string; signal: any }) {
-  let url = "https://blog-c4e0e-default-rtdb.firebaseio.com/post.json";
+  let url = "http://localhost:9999/api/all-post/blog";
 
   const response = await fetch(url, {
     method: "GET",
+
     signal: signal,
   });
+
+  const response1 = await fetch(
+    `http://localhost:9999/api/get-a-post/blog?post-id=${id}`,
+    {
+      method: "GET",
+    }
+  );
 
   if (!response.ok) {
     throw new Error({ statusCode: 400, title: await response.json() });
   }
 
-  let responseData = await response.json();
-  const postsArray = [];
+  const data = await response.json();
 
-  for (const key in responseData) {
-    if (id === key) {
-      let post = {
-        id: key,
-        title: responseData[key].title,
-        description: responseData[key].description,
-      };
-      return post;
-    }
-  }
+  return data;
 }
+
+export const getBlogPost = async ({ id }: { id: string }) => {
+  const response = await fetch(
+    `http://localhost:9999/api/get-a-post/blog?post-id=${id}`,
+    {
+      method: "GET",
+    }
+  );
+
+  if (!response.ok) {
+    console.log("CASALA");
+  }
+  const data = await response.json();
+
+  return data;
+};
+
+export const deleteBlog = async ({ id }: { id: string }) => {
+  const response = await fetch(
+    `http://localhost:9999/api/delete/blog?post-id=${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    console.log("Its not going");
+  }
+};

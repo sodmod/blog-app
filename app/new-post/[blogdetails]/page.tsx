@@ -4,17 +4,24 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import styles from "./PostDetails.module.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBlog, getBlog1 } from "@/util/https";
-import ErrorBlock from "@/UI/ErrorBlock";
-import LoadingIndicator from "@/UI/LoadingIndicator";
+import { deleteBlog, getBlogPost } from "@/util/https";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
 import { storePost } from "@/slices/useSlice";
 
 type Post = {
-  id: string;
+  unique: string;
   title: string;
   description: string;
 };
+
+interface Post1 {
+  uniqueId: string;
+  title: string;
+  description: string;
+  url: string;
+  dateCreated: Date;
+}
 
 interface MyError {
   statusCode: number;
@@ -25,69 +32,28 @@ const PostDetails: React.FC = () => {
   const param = useParams();
   const id = param.blogdetails.toString();
 
-  const retry = useQueryClient();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { data, error, isLoading } = useQuery<Post[], MyError>({
-    queryKey: ["blo"],
-    queryFn: getBlog1,
+  const retry = useQueryClient();
+
+  const { data } = useQuery<Post1>({
+    queryKey: ["post1"],
+    queryFn: () => getBlogPost({ id }),
   });
 
-  const result = data?.find((item) => item.id === id);
-
-  console.log(result);
-
-  function retryHandler() {
-    retry.refetchQueries(["blo"]);
-  }
-
-  if (result) {
+  if (data) {
     dispatch(
       storePost({
-        id: result.id,
-        title: result.title,
-        description: result.description,
+        uniqueId: data.uniqueId,
+        description: data.description,
+        title: data.title,
+        url: data.url,
       })
     );
   }
 
-  let content;
-  if (isLoading) {
-    content = <LoadingIndicator />;
-  }
-  if (result) {
-    <div>
-      <div className="flex justify-evenly">
-        <h1>title</h1>
-        <nav className="flex gap-5">
-          <button>Delete</button>
-          <Link href="/new-post">Edit</Link>
-        </nav>
-      </div>
-      <div id={styles["event-details-content"]}>
-        <div id={styles["event-details-info"]}>
-          <div>
-            <p>{}</p>
-          </div>
-          <p id={styles["event-details-description"]}>{result.title}</p>
-        </div>
-      </div>
-    </div>;
-  } else if (error) {
-    content = (
-      <>
-        <ErrorBlock
-          title={error.statusCode}
-          // message=""
-          message={error.title ? error.title : ""}
-        />
-        <p>
-          <button className={styles["button"]} onClick={retryHandler}>
-            View Details
-          </button>
-        </p>
-      </>
-    );
+  function retryHandler() {
+    retry.refetchQueries(["post1"]);
   }
 
   return (
@@ -98,48 +64,48 @@ const PostDetails: React.FC = () => {
         </Link>
       </Header>
       <div id={styles["event-details-content"]}>
-        {error && (
-          <>
-            <ErrorBlock
-              title={error.statusCode}
-              // message=""
-              message={error.title ? error.title : ""}
-            />
-            <p>
-              <button className={styles["button"]} onClick={retryHandler}>
-                View Details
+        <div>
+          <div className="flex justify-evenly w-full text-3xl p-3">
+            <h1 className="w-1/2">Title</h1>
+            <nav className="flex gap-7 justify-evenly w-1/2">
+              <button
+                onClick={(event) => {
+                  const id = param.blogdetails.toString();
+                  deleteBlog({ id });
+                }}
+                style={{
+                  background: "red",
+                  borderRadius: "10px",
+                  padding: "4px",
+                }}
+              >
+                Delete
               </button>
-            </p>
-          </>
-        )}
-        {isLoading && (
-          <div className="flex m-auto justify-center">
-            <LoadingIndicator />
+              <Link
+                href={`/new-post/${param.blogdetails}/edit-post`}
+                style={{
+                  backgroundColor: "blueviolet",
+                  borderRadius: "10px",
+                  padding: "4px",
+                }}
+              >
+                Edit
+              </Link>
+            </nav>
           </div>
-        )}
-        {data && !isLoading && (
-          <div>
-            <div className="flex justify-evenly w-full text-3xl p-3">
-              <h1 className="w-1/2">Title</h1>
-              <nav className="flex gap-5 justify-end w-1/2">
-                <button>Delete</button>
-                <Link href={`/new-post/${param.blogdetails}/edit-post`}>
-                  Edit
-                </Link>
-              </nav>
-            </div>
-            {/* <div id={styles["event-details-content"]}> */}
+          <div id={styles["event-details-content"]}>
+            <img src={`${data?.url}`} alt="" />
             <div id={styles["event-details-info"]}>
               <div>
-                <p>{result?.title}</p>
+                <p>{data?.title}</p>
               </div>
               <p id={styles["event-details-description"]}>
-                {result?.description}
+                {data?.description}
               </p>
             </div>
-            {/* </div> */}
           </div>
-        )}
+        </div>
+        {/* )} */}
       </div>
     </div>
   );

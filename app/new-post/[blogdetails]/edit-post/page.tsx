@@ -1,36 +1,38 @@
 "use client";
 
+import { useSelector } from "react-redux";
 import Form from "@/components/Form";
 import Link from "next/link";
 import styles from "../../../../components/Form.module.css";
 import { useParams, useRouter } from "next/navigation";
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/provider/TanstackProvider";
-import { fetchBlog, patchBlog } from "@/util/https";
+import { patchBlog } from "@/util/https";
 
 const EditPost: React.FC = () => {
   const params = useParams();
   const router = useRouter();
 
-  const { data } = useQuery({
-    queryKey: ["blogs", params.blogdetails],
-    queryFn: ({ signal }) =>
-      fetchBlog({ id: params.blogdetails.toString(), signal }),
-  });
-
-  console.log("hmm this is data", data);
+  const data = useSelector((state: any) => state.post);
+  console.log("This is the uniqueId", data);
 
   const { mutate } = useMutation({
     mutationFn: patchBlog,
     onMutate: async (data: any) => {
       const newPost = data;
-      await queryClient.cancelQueries({ queryKey: ["", params.blogdetails] });
-      const previousPost = queryClient.getQueriesData(["", params.blogdetails]);
-      queryClient.setQueriesData(["", params.blogdetails], newPost);
+      await queryClient.cancelQueries({
+        queryKey: ["blogs", params.blogdetails],
+      });
+      const previousPost = queryClient.getQueriesData([
+        "",
+        params.blogdetails.toString(),
+      ]);
+      queryClient.setQueriesData(["", params.blogdetails.toString()], newPost);
       return {
         previousPost,
       };
     },
+
     onError: (error, data, context) => {
       if (context && context.previousPost) {
         queryClient.setQueriesData(["", params.id], context.previousPost);
@@ -42,9 +44,15 @@ const EditPost: React.FC = () => {
   });
 
   function handleSubmit(formData: any) {
-    console.log(formData);
-    mutate({ id: params.blogdetails.toString(), formData: formData.formData });
-    // router.push("/");
+    mutate({
+      formData: {
+        id: params.blogdetails,
+        title: formData.get("title"),
+        description: formData.get("description"),
+        url: formData.get("url"),
+      },
+    });
+    router.push("/");
   }
 
   return (

@@ -1,8 +1,7 @@
 "use client";
 
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import styles from "./Form.module.css";
-import { useRouter } from "next/navigation";
 
 type Post = {
   id: string;
@@ -21,14 +20,22 @@ const Form: React.FC<{
   onSubmit: (data: Record<string, any>) => void;
   inputData: any;
 }> = (props) => {
-  const { title, description } = props.inputData || {};
-  const router = useRouter();
+  const { title, description, url } = props.inputData || {};
+
+  const [isEmpty, setIsEmpty] = useState(false);
+
+  let isSubmitting;
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData);
-    props.onSubmit(data);
-    router.push("/");
+    if (formData.get("title") !== "" || formData.get("description") !== "") {
+      setIsEmpty(false);
+      isSubmitting = props.onSubmit(formData);
+    } else {
+      setIsEmpty(true);
+    }
   }
 
   return (
@@ -36,6 +43,11 @@ const Form: React.FC<{
       <div className={styles["control"]}>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" name="title" defaultValue={title ?? ""} />
+      </div>
+
+      <div className={styles["control"]}>
+        <label htmlFor="title">Image Url</label>
+        <input type="text" id="url" name="url" defaultValue={url ?? ""} />
       </div>
 
       <p className={styles["control"]}>
@@ -47,6 +59,11 @@ const Form: React.FC<{
         />
       </p>
       <div className={styles["form-actions"]}>{props.children}</div>
+      {isEmpty && (
+        <p className="text-red-700">
+          Please fill in the title and the description
+        </p>
+      )}
     </form>
   );
 };
