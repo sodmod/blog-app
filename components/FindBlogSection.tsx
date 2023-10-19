@@ -1,14 +1,14 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { getBlog } from "@/util/https";
 import ErrorBlock from "@/UI/ErrorBlock";
 import PostItems from "./PostItems";
-import styles from "./FindBlogSection.module.css";
 import { storePosts } from "../slices/useSlice";
-import LoadingIndicator from "@/UI/LoadingIndicator";
+import styles from "./FindBlogSection.module.css";
+// import LoadingIndicator from "@/UI/LoadingIndicator";
 
 interface Post {
   uniqueId: string;
@@ -24,13 +24,13 @@ interface MyError {
   withDarkMode: boolean;
 }
 const FindBlogSection: React.FC = (props) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchElement = useRef<HTMLInputElement | null>(null);
   const [searchTerm, setSetsearchTerm] = useState<string>("");
 
-  useEffect(() => {
-    setIsLoading((preState) => !preState);
-  }, [isLoading]);
+  // useEffect(() => {
+  //   setIsLoading((preState) => !preState);
+  // }, [isLoading]);
 
   const disptatch = useDispatch<AppDispatch>();
 
@@ -44,20 +44,20 @@ const FindBlogSection: React.FC = (props) => {
   }
 
   function handleSubmit(event: any) {
-    setIsLoading(true);
+    // setIsLoading(true);
     event.preventDefault();
     setSetsearchTerm(searchElement.current?.value || "");
   }
 
   let content = <p>Please enter a search term and to find your post</p>;
 
-  if (isLoading) {
-    content = <LoadingIndicator />;
-  }
+  // if (isLoading) {
+  //   content = <LoadingIndicator />;
+  // }
 
   if (data) {
     content = (
-      <ul className={styles[".events-list"]}>
+      <ul className={styles["events-list"]}>
         {data.map((event) => (
           <li key={event.uniqueId}>
             <PostItems event={event} />
