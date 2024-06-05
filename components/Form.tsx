@@ -1,13 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "./Form.module.css";
 
-const Form: React.FC<{
-  children: React.ReactNode;
-  onSubmit: (data: Record<string, any>) => void;
-  inputData: any;
-}> = (props) => {
+const Form: React.FC<{ children: React.ReactNode; onSubmit: (data: Record<string, any>) => void; inputData: any; }> = (props) => {
   const { title, description, url } = props.inputData || {};
 
   const [isEmpty, setIsEmpty] = useState(false);
